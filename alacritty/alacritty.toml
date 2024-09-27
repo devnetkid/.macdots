@@ -1,0 +1,22 @@
+# configuration file for alacritty
+
+[window]
+decorations = "Full"
+dynamic_title = false
+padding = { x = 10, y = 10 }
+
+[scrolling]
+# history = 10000
+# multiplier = 3
+
+[font]
+# normal = { family = Menlo, style = "Regular" }
+size = 16
+
+[colors]
+
+
+[colors.primary]
+foreground = "#d8d8d8"
+background = "#333333"
+

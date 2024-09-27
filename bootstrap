@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+#
+# Bootstrop dotfiles and install apps
+
+function install_homebrew() {
+    # Install Homebrew if it isn't already installed
+    if ! command -v brew &>/dev/null; then
+        echo "Homebrew not installed. Installing Homebrew."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+        # Attempt to set up Homebrew PATH automatically for this session
+        if [ -x "/opt/homebrew/bin/brew" ]; then
+            # For Apple Silicon Macs
+            echo "Configuring Homebrew in PATH for Apple Silicon Mac..."
+            export PATH="/opt/homebrew/bin:$PATH"
+        fi
+    else
+        echo "Homebrew is already installed."
+    fi
+    
+    # Verify brew is now accessible
+    if ! command -v brew &>/dev/null; then
+        echo "Failed to configure Homebrew in PATH. Please add Homebrew to your PATH manually."
+        exit 1
+    fi
+}
+
+function brew_install_apps() {
+    # List of CLI apps to be installed by brew
+    brew=(
+        curl
+        grep
+        pyenv
+        pyenv-virtualenv
+        tmux
+        tree
+    )
+    
+    # List of GUI apps to be installed by brew cask
+    cask=(
+        alacritty
+        firefox
+        keepassxc
+        rectangle
+    )
+    
+    brew update
+    brew upgrade
+    
+    brew install ${brew[@]}
+    brew install --cask  ${cask[@]}
+}
+
+function configure_apps() {
+    # Make sym links
+    ln -s ~/.macdots/zsh/zshrc ~/.zshrc
+    ln -s ~/.macdots/vim/vimrc ~/.vimrc
+    ln -s ~/.macdots/alacritty/alacritty.toml ~/.alacritty.toml
+}
+
+function run() {
+    echo "This script will install and configure several programs"
+    echo "It will overwrite any existing settings"
+    read -p "Are you sure you wish to continue?"
+    if [ "$REPLY" != "yes" ]; then
+       exit
+    fi
+
+    sudo -v
+    install_homebrew
+    brew_install_apps
+    configure_apps
+}
+
+if [ "$(uname -s)" != "Darwin" ]; then
+    echo "This script was intended to be ran on mac os"
+    exit 0
+fi
+
+run

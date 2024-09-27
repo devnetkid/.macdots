@@ -1,0 +1,105 @@
+" .vimrc
+
+" Without nocompatible set jk to esc mapping wont work
+set nocompatible
+set timeoutlen=500
+imap jk <esc>
+nnoremap <space> <nop>
+let mapleader = " "
+let maplocalleader = "C-y"
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
+autocmd FileType python     nnoremap <buffer> <leader>c I#<esc>
+nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
+iabbrev py #!/usr/bin/env python
+
+" Netrw file explorer
+let g:netrw_banner=0
+let g:netrw_liststyle=3
+
+inoremap <c-e> <esc>:Lex<cr>:vertical resize 30<cr>
+nnoremap <c-e> <esc>:Lex<cr>:vertical resize 30<cr>
+
+" Tabs
+nnoremap <leader>tn :tabn<cr>
+nnoremap <leader>tp :tabp<cr>
+nnoremap <leader>nt :tabnew<cr>
+nnoremap <leader>ct :tabclose<cr>
+nnoremap <leader>nh :nohl<cr>
+
+" Cosmetics
+set t_Co=256
+colorscheme slate
+syntax on
+set cursorline
+" highligh cursorline cterm=bold ctermbg=black
+set hlsearch
+set showmatch
+set scrolloff=5
+hi link markdownError Normal
+
+" Tab handling
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set shiftwidth=4
+
+" Line numbering
+set number
+set relativenumber
+
+" Mouse featuers
+set mouse=a
+
+" Configure status bar
+set laststatus=2
+set statusline=
+set statusline+=%#FileName#\ %t\ %*
+set statusline+=%#FileFormat#\ \[%{&ff}:%*
+set statusline+=%#FileEncoding#%{&fenc}]\ %*
+set statusline+=%#FilePath#\ %F\ %*
+set statusline+=%#ModifiedFlag#\ %m%r%*
+set statusline+=%=
+set statusline+=%#NormalColor#%{(mode()=='n')?'\ NORMAL\ ':''}
+set statusline+=%#InsertColor#%{(mode()=='i')?'\ INSERT\ ':''}
+set statusline+=%#ReplaceColor#%{(mode()=='R')?'\ REPLACE\ ':''}
+set statusline+=%#VisualColor#%{(mode()=='v')?'\ VISUAL\ ':''}
+set statusline+=%#VisualColor#%{(mode()=='c')?'\ COMMAND\ ':''}
+set statusline+=%*
+set statusline+=%=%#BufferNumber#\ buff:%n\ %*
+set statusline+=%#LineNumber#\ line:%l/%L\ %*
+set statusline+=%#ColumnNumber#\ col:%v\ %*
+set statusline+=%#FileType#\ type:\ %Y\ %*
+
+" Colors for status bar
+" https://www.ditig.com/publications/256-colors-cheat-sheet
+" Blue Theme FileNameBG=39, ModeFG=45
+" Green Theme FileNameBG=36, ModeFG=43
+" Orange Theme FileNameBG=208, ModeFG=214
+" Yellow Theme FileNameBG=39, ModeFG=45
+highlight StatusLine ctermbg=233
+highlight StatusLineNC ctermbg=233 " Used when window is not currently active
+highlight FileName ctermfg=233 ctermbg=220 cterm=bold
+highlight FileFormat ctermfg=233 ctermbg=239
+highlight FileEncoding ctermfg=233 ctermbg=239
+highlight FilePath ctermfg=242 ctermbg=236
+highlight ModifiedFlag ctermfg=44 ctermbg=233
+highlight TimeStamp ctermfg=10 ctermbg=242
+highlight BufferNumber ctermfg=242 ctermbg=236
+highlight LineNumber ctermfg=233 ctermbg=240
+highlight ColumnNumber ctermfg=233 ctermbg=240
+highlight FileType ctermfg=233 ctermbg=246
+highlight NormalColor ctermfg=226 ctermbg=234
+highlight InsertColor ctermfg=226 ctermbg=234
+highlight ReplaceColor ctermfg=226 ctermbg=234
+highlight VisualColor ctermfg=226 ctermbg=234
+
+" Remeber folds when exiting and reload them at next startup
+augroup remember_folds
+  autocmd!
+  autocmd BufWinLeave * mkview
+  autocmd BufWinEnter * silent! loadview
+augroup END
+
